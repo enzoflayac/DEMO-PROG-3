@@ -5,55 +5,39 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 class SCATTER:
-    def __init__(self, alpha, beta):
-        self.alpha = alpha
-        self.beta = beta
-    def INPUTGRID(self):
-        dx=0.10
-        dy=0.10
-        ngrid=200
-        xmin=-10.00
-        ymin=-10.00
-        
-        file = open("XYINPUT.csv","w")  # OPENING CSV-FILE FOR WRITING
-        file.write("XVAL,YVAL\n")       # HEADER-LINE OF CSV-FILE
-        
-        ##LOOP OVER X,Y TO CREATE GRIDS
-        for ix in range(0,ngrid+1):
-            for iy in range(0,ngrid+1):
-                xval=xmin+dx*ix
-                yval=ymin+dy*iy
-                file.write("{0:.6f},{1:.6f}\n".format(xval,yval)) #WRITING IN CSV FILE
-        file.close() #FILE CLOSE
-        
-    def TESTOUTPUT(self):
-        #OUTPUT CSV-FILE
-        file2 = open("XYOUTPUT.csv","w")   # "w" MEANS OPEN-FILE FOR WRITING
-        file2.write("XVAL,YVAL,AVG TEMPERATURE, ASR\n") #HEADER LINE OF OUTPUT CSV-FILE
-        
+    def CALCUL(self, name ,tpce, effst, tst):
+        name += ".csv"
+        file2 = open(name,"w")   # "w" MEANS OPEN-FILE FOR WRITING
+        file2.write("Longitude,Latitude,EffNST, Pout\n") #HEADER LINE OF OUTPUT CSV-FILE
         #INPUT CSV-FILE
-        file1 = open("XYINPUT.csv","r")    # "r" MEANS OPEN-FILE FOR READING ONLY
+        file1 = open("World-Temp-Irr.csv","r")    # "r" MEANS OPEN-FILE FOR READING ONLY
         linefile1 = csv.reader(file1)      # FUNCTION FOR PROCESSING LINE IN A CSV-FILE
 
         next(linefile1)                    # ESCAPE THE FIRST LINE OF CSV-FILE : HEADER LINE
         for row in linefile1:              # LOOP TO READ ELEMENTS OF CSV-FILE
             xval = float(row[0])           # 1ST ELEMENT OF ROW, USE "float()" FOR PROPER CONVERSION
             yval = float(row[1])           # 2ND ELEMENT OF ROW, USE "float()" FOR PROPER CONVERSION
-            
-            if ((xval*yval) > 0.00 ):
-                f1 = self.alpha*rand.uniform(0.0,1.0) 
-                f2 = self.beta*rand.uniform(-1.0,0.0)
-                ff=f1+f2                       # 3RD ELEMENT, FILLING WITH RANDOM NUMBER
+            tnst = float(row[2])           # 3TH ELEMENT OF ROW, USE "float()" FOR PROPER CONVERSION
+            pin = float(row[3])            # 4TH ELEMENT OF ROW, USE "float()" FOR PROPER CONVERSION
+            if (35 <= xval <= 72) and ((-25) <= yval <= 65):
+                effnst = (((tnst-tst)*tpce*effst)/100)+effst
+                pout=pin*(effnst/100)
+                ##PRINTING OUTPUT WITH FORMAT
+                file2.write("{0:.4f},{1:.4f},{2:.6f},{3:.6f}\n".format(xval,yval,effnst,pout))
             else:
-                f1 = self.beta*rand.uniform(0.0,1.0) 
-                f2 = self.alpha*rand.uniform(-1.0,0.0)
-                ff=f1+f2                       # 3RD ELEMENT, FILLING WITH RANDOM NUMBER
-            
-            ##PRINTING OUTPUT WITH FORMAT
-            file2.write("{0:.4f},{1:.4f},{2:.6f}\n".format(xval,yval,ff))
+                effnst = (((tnst-tst)*tpce*effst)/100)+effst
+                pout=pin*(effnst/100)
+                ##PRINTING OUTPUT WITH FORMAT
+                file2.write("{0:.4f},{1:.4f},{2:.6f},{3:.6f}\n".format(xval,yval,effnst,pout))
             #print("{0:.4f},{1:.4f},{2:.6f}".format(xval,yval,ff))
         file1.close() #FILE CLOSE
         file2.close() #FILE CLOSE
+
+OBJ1= SCATTER()
+OBJ1.CALCUL("World-Si",(-0.15),20.4,25)
+OBJ1.CALCUL("World-Perovskite",(-0.15),20.4,25)
+OBJ1.CALCUL("Europe-Si",(-0.15),20.4,25)
+OBJ1.CALCUL("Europe-Perovskite",(-0.15),20.4,25)
 
 df = pd.read_csv("World-Temp-Irr.csv")
 for col in df.columns:

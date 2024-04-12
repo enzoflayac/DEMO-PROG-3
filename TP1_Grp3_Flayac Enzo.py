@@ -11,11 +11,11 @@ class SCATTER:
         self.effst = effst
         self.tst = tst
         
-    def CALCUL(self, xval, yval, tnst, pin, file2):
+    def CALCUL(self, Latitude, Longitude, tnst, pin, file2):
         effnst = (((tnst-self.tst)*self.tpce*self.effst)/100)+self.effst # YIELD CALCULATION FOR NON-STANDARD CONDITIONS
         pout=pin*(effnst/100) # CALCULATION OF DEVICE OUTPUT POWER
         ##PRINTING OUTPUT WITH FORMAT 
-        file2.write("{0:.4f},{1:.4f},{2:.6f},{3:.6f}\n".format(xval,yval,effnst,pout))
+        file2.write("{0:.4f},{1:.4f},{2:.6f},{3:.6f}\n".format(Latitude,Longitude,effnst,pout))
     def OUTPOUT(self):
         self.name += ".csv" # ADD EXTENSION .CSV TO THE NAME
         file2 = open(self.name,"w")   # "w" MEANS OPEN-FILE FOR WRITING
@@ -26,15 +26,15 @@ class SCATTER:
         europe_or_not=self.name.split('-')
         next(linefile1)                    # ESCAPE THE FIRST LINE OF CSV-FILE : HEADER LINE
         for row in linefile1:              # LOOP TO READ ELEMENTS OF CSV-FILE
-            xval = float(row[0])           # 1ST ELEMENT OF ROW, USE "float()" FOR PROPER CONVERSION
-            yval = float(row[1])           # 2ND ELEMENT OF ROW, USE "float()" FOR PROPER CONVERSION
+            Latitude = float(row[0])           # 1ST ELEMENT OF ROW, USE "float()" FOR PROPER CONVERSION
+            Longitude = float(row[1])           # 2ND ELEMENT OF ROW, USE "float()" FOR PROPER CONVERSION
             tnst = float(row[2])           # 3TH ELEMENT OF ROW, USE "float()" FOR PROPER CONVERSION
             pin = float(row[3])            # 4TH ELEMENT OF ROW, USE "float()" FOR PROPER CONVERSION
             if europe_or_not[0] == 'Europe': # CONDITION TO CHECK IF IT'S IN EUROPE
-                if (35 <= xval <= 72) and ((-25) <= yval <= 65): 
-                    self.CALCUL(xval,yval,tnst,pin,file2)
+                if (35 <= Latitude <= 72) and ((-25) <= Longitude <= 65): 
+                    self.CALCUL(Latitude,Longitude,tnst,pin,file2)
             else: # IF NOT IN EUROPE
-                self.CALCUL(xval,yval,tnst,pin,file2)
+                self.CALCUL(Latitude,Longitude,tnst,pin,file2)
         file1.close() #FILE CLOSE
         file2.close() #FILE CLOSE
     

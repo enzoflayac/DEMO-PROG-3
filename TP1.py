@@ -1,6 +1,6 @@
+# Fichier codé par FLAYAC ENZO groupe TP3
+# dernière modification 12 Avril 2024
 import csv
-import random as rand
-import math
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -145,11 +145,9 @@ print_max("World-Si.csv")#PRINT THE MAX OF POUT AND EFFNST WITH THE FILE NAME
 print_max("World-Perovskite.csv")#PRINT THE MAX OF POUT AND EFFNST WITH THE FILE NAME
 print_max("Europe-Si.csv")#PRINT THE MAX OF POUT AND EFFNST WITH THE FILE NAME
 print_max("Europe-Perovskite.csv")#PRINT THE MAX OF POUT AND EFFNST WITH THE FILE NAME
-plot_printing("World-Si.csv") #PRINT THE PLOT WITH THE FILE NAME
+plot_printing("Europe-Si.csv") #PRINT THE PLOT WITH THE FILE NAME
 
 #Je trouve que l'endroit où est le maximum Pout en Europe est à Chypre.
-
-
-
-
-
+#Je trouve que l'endroit où est le minimum Pout en Europe est en Norvège à l'île Jan Mayen.
+#Je trouve que l'endroit où est le maximum d'efficience en Europe est au Groenland.
+#Je trouve que l'endroit où est le minimum d'efficience en Europe est en Irak.
